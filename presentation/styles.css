@@ -1,0 +1,586 @@
+/* Polya AI Tutor: Behind the Scenes
+   Custom styles layered on the reveal.js "white" theme. */
+
+:root {
+  --accent: #2a6f70;
+  --accent-soft: #e6efef;
+  --warm: #f5f1e8;
+  --warm-border: #d9d0bb;
+  --ink: #1d1d1d;
+  --muted: #6b6b6b;
+  --student: #b85c38;
+  --tutor: #2a6f70;
+}
+
+.reveal {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  font-size: 30px;
+}
+
+/* Cap mermaid diagrams so they fit inside the 1280x800 slide */
+.reveal .slide svg.mermaid-js,
+.reveal .slide pre.mermaid-js {
+  max-width: 100% !important;
+  max-height: 540px !important;
+  width: auto !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+}
+.reveal .slide figure { margin: 0; }
+/* Stop mermaid from clipping the last character of node labels */
+.reveal .slide svg.mermaid-js foreignObject {
+  overflow: visible;
+}
+.reveal .slide svg.mermaid-js .nodeLabel,
+.reveal .slide svg.mermaid-js .edgeLabel,
+.reveal .slide svg.mermaid-js .label {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.reveal h1 { font-size: 1.7em; line-height: 1.15; }
+.reveal h2 { font-size: 1.3em; line-height: 1.2; margin-bottom: 0.5em; }
+.reveal h3 { font-size: 1.0em; color: var(--accent); margin-bottom: 0.4em; }
+
+/* When an H1 is used as a regular slide title (not the title block),
+   render it like an H2 so the deck stays visually consistent. */
+.reveal .slides section.slide > h1 {
+  font-size: 1.3em;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+/* Pandoc tags H1 slides with "title-slide center". Reveal.js then sets
+   `top: <px>` inline to vertically center the slide. Undo that unless we
+   explicitly opted in with .center-slide (or it's the actual title slide). */
+.reveal .slides section.slide.level1.center:not(#title-slide):not(.center-slide) {
+  top: 0 !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+.reveal h4 { font-size: 0.85em; color: var(--accent); margin-bottom: 0.3em; }
+
+.reveal section { text-align: left; }
+.reveal section.center { text-align: center; }
+.reveal .center-slide { text-align: center; }
+
+.reveal p, .reveal li { line-height: 1.45; }
+.reveal ul, .reveal ol { margin-bottom: 0.6em; }
+.reveal li { margin-bottom: 0.35em; }
+
+.reveal blockquote {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  font-style: normal;
+  padding: 0.7em 1em;
+  box-shadow: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reveal a { color: var(--accent); }
+
+/* Title slide tweaks */
+.reveal #title-slide .title {
+  color: var(--ink);
+  font-size: 2.0em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.reveal #title-slide .subtitle {
+  color: var(--accent);
+  font-size: 0.9em;
+  margin-top: 0.4em;
+  font-weight: 400;
+}
+.reveal #title-slide .quarto-title-author-name { color: var(--muted); font-size: 0.6em; }
+
+/* Section divider slides */
+.divider-slide {
+  text-align: center;
+  padding-top: 2em;
+}
+.divider-slide .eyebrow {
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.55em;
+  margin-bottom: 0.5em;
+}
+.divider-slide h2 { font-size: 1.8em; }
+
+/* Two-column generic */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4em;
+  align-items: start;
+}
+.col-card {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  padding: 0.9em 1.1em;
+  border-radius: 4px;
+}
+.col-card.alt {
+  background: var(--accent-soft);
+  border-color: #b6cfd0;
+}
+.col-card h3 { margin-top: 0; }
+.col-card .card-title {
+  display: block;
+  font-size: 1.0em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+.col-card .paradigm-tag {
+  display: inline-block;
+  font-size: 0.55em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--warm-border);
+  border-radius: 999px;
+  padding: 0.25em 0.7em;
+  margin-bottom: 0.6em;
+}
+.col-card .bullets { font-size: 0.75em; }
+.col-card .bullets p { margin: 0.5em 0 0.15em; }
+.col-card .bullets ul { margin: 0 0 0.4em; padding-left: 1.2em; }
+.col-card .bullets li { margin-bottom: 0.1em; line-height: 1.35; }
+
+/* Four-phase strip */
+.phase-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6em;
+  margin-top: 0.6em;
+}
+.phase-cell {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  padding: 0.7em 0.7em;
+  border-radius: 4px;
+  font-size: 0.65em;
+}
+.phase-cell .num {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 0.95em;
+}
+.phase-cell .nm {
+  font-weight: 600;
+  margin: 0.2em 0 0.3em;
+  font-size: 1.05em;
+}
+.phase-cell .desc {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* System prompt schematic */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-top: 0.4em;
+}
+.stack-row {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  padding: 0.5em 0.85em;
+  border-radius: 3px;
+  font-size: 0.65em;
+  display: grid;
+  grid-template-columns: 11em 1fr;
+  gap: 0.7em;
+  align-items: center;
+}
+.stack-row > p { margin: 0; }
+.stack-row .lbl {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 0.85em;
+  text-transform: uppercase;
+}
+.stack-row.live {
+  background: #fff8e8;
+  border-color: #d9c285;
+}
+
+/* Numbered loop */
+.loop {
+  counter-reset: loop;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5em;
+}
+.loop li {
+  counter-increment: loop;
+  padding: 0.45em 0.6em 0.45em 2.5em;
+  position: relative;
+  border-bottom: 1px solid var(--warm-border);
+  font-size: 0.75em;
+}
+.loop li::before {
+  content: counter(loop);
+  position: absolute;
+  left: 0.5em;
+  top: 0.5em;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.5em;
+  font-size: 0.85em;
+}
+
+/* Mock-interaction layout */
+.interaction {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 1em;
+  align-items: start;
+  margin-top: 0.3em;
+}
+
+/* Right column: flowchart stacked above reasoning */
+.interaction .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+  min-width: 0;
+}
+
+/* Turn slides: keep the original .interaction 2-column grid, but shift
+   the right column upward via vertical relative positioning so the
+   flowchart sits alongside the title instead of below the header band.
+   The header text is capped at ~52% width so the shifted right column
+   doesn't overlap it. Also override reveal.js's auto vertical centering
+   on level-2 slides so all turns anchor to the top consistently. */
+.reveal .slides section.slide.turn-slide {
+  top: 0 !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+.reveal .slides section.slide.turn-slide > h2,
+.reveal .slides section.slide.turn-slide > h1,
+.reveal .slides section.slide.turn-slide > p {
+  max-width: 52%;
+}
+.reveal .slides section.slide.turn-slide .interaction .right-col {
+  position: relative;
+  top: -5em;
+}
+
+/* Shared frame for both flowchart variants */
+.flow-frame {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  border-radius: 4px;
+  padding: 0.7em 0.9em 0.65em;
+}
+
+/* Mermaid variant: tighter sizing for the inline mini-diagram */
+.reveal .slide .flow-frame svg.mermaid-js {
+  max-height: 280px !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+  display: block;
+}
+.reveal .slide .flow-frame div.mermaid,
+.reveal .slide .flow-frame pre.mermaid {
+  margin: 0;
+  text-align: center;
+  font-size: 0.5em;
+  background: transparent;
+}
+.reveal .slide .flow-frame figure { margin: 0; }
+
+/* Text-arrows variant */
+.flow-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  font-size: 0.78em;
+  color: var(--ink);
+}
+.flow-mini .node {
+  padding: 0.45em 1em;
+  border-radius: 6px;
+  background: #fff;
+  border: 1.5px solid var(--warm-border);
+  color: var(--muted);
+  text-align: center;
+  min-width: 11em;
+  font-weight: 500;
+}
+.flow-mini .node.decision { font-style: italic; }
+.flow-mini .node.decided {
+  border-color: var(--accent);
+  color: var(--accent);
+  border-width: 2px;
+  font-weight: 600;
+}
+.flow-mini .node.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 600;
+  font-style: normal;
+}
+.flow-mini .arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--accent);
+  line-height: 1;
+  padding: 0.05em 0;
+}
+.flow-mini .arrow .lbl {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.8em;
+  margin-bottom: 0.05em;
+  text-transform: uppercase;
+}
+.flow-mini .arrow .stem { font-size: 1.6em; }
+.dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+}
+.bubble {
+  padding: 0.5em 0.8em;
+  border-radius: 8px;
+  font-size: 0.6em;
+  line-height: 1.4;
+  max-width: 95%;
+}
+.bubble .who {
+  display: block;
+  font-size: 0.78em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.15em;
+}
+.bubble.student {
+  background: #fff1e6;
+  border: 1px solid #e8c4a3;
+  align-self: flex-start;
+}
+.bubble.student .who { color: var(--student); }
+.bubble.tutor {
+  background: var(--accent-soft);
+  border: 1px solid #b6cfd0;
+  align-self: flex-end;
+}
+.bubble.tutor .who { color: var(--tutor); }
+
+/* Reasoning panel */
+.reasoning {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  border-radius: 4px;
+  padding: 0.75em 0.95em;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.5em;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.reasoning h4,
+.reasoning .block-head {
+  display: block;
+  font-family: inherit;
+  font-size: 0.95em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin: 0 0 0.25em;
+  text-transform: uppercase;
+}
+.reasoning .block + .block { margin-top: 0.6em; }
+.reasoning ul {
+  margin: 0;
+  padding-left: 0.9em;
+  list-style: none;
+}
+.reasoning li {
+  position: relative;
+  margin-bottom: 0.1em;
+}
+.reasoning li::before {
+  content: "–";
+  position: absolute;
+  left: -0.9em;
+}
+
+/* Phase pill */
+.phase-pill {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.32em 0.8em;
+  border-radius: 999px;
+  margin-bottom: 0.4em;
+}
+.phase-pill.alt-2 { background: #4a6fa5; }
+.phase-pill.alt-3 { background: #8a5a44; }
+.phase-pill.alt-4 { background: #6b4d8a; }
+
+.breadcrumb {
+  color: var(--muted);
+  font-size: 0.5em;
+  margin-bottom: 0.5em;
+  letter-spacing: 0.04em;
+}
+.breadcrumb .now {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Profile cards */
+.profile-card {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  border-radius: 4px;
+  padding: 0.85em 1.05em;
+  font-size: 0.65em;
+}
+.profile-card .name {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.15em;
+  margin-bottom: 0.4em;
+}
+.profile-card .label {
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.65em;
+  margin-top: 0.5em;
+}
+.profile-card .val { margin-bottom: 0.2em; }
+
+/* Mermaid sizing */
+.reveal .quarto-figure-center pre.mermaid,
+.reveal pre.mermaid,
+.reveal div.mermaid {
+  box-shadow: none;
+  background: transparent;
+  text-align: center;
+  font-size: 0.55em;
+  padding: 0;
+  margin: 0.3em 0;
+}
+.reveal .quarto-figure svg,
+.reveal pre.mermaid svg,
+.reveal div.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.reveal figure.figure { margin: 0; }
+
+/* Response rows */
+.responses {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-top: 0.5em;
+}
+.response-row {
+  display: grid;
+  grid-template-columns: 6em 1fr;
+  gap: 0.8em;
+  padding: 0.5em 0.85em;
+  border-radius: 4px;
+  font-size: 0.7em;
+  align-items: center;
+}
+.response-row > p { margin: 0; }
+.response-row.bad { background: #f6e0db; border: 1px solid #d8a99e; }
+.response-row.mid { background: #f8eecf; border: 1px solid #d6c178; }
+.response-row.good { background: var(--accent-soft); border: 1px solid #b6cfd0; }
+.response-row .verdict {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
+.response-row.bad .verdict { color: #a23e22; }
+.response-row.mid .verdict { color: #876600; }
+.response-row.good .verdict { color: var(--accent); }
+
+/* Spectrum strip */
+.spectrum {
+  background: var(--warm);
+  border: 1px solid var(--warm-border);
+  padding: 0.9em 1.2em;
+  border-radius: 4px;
+  margin: 0.6em 0;
+  font-size: 0.7em;
+}
+.spectrum .label-row {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.55em;
+  color: var(--muted);
+  margin-bottom: 0.4em;
+}
+.spectrum .bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.4em;
+  text-align: center;
+}
+.spectrum .bar > div {
+  padding: 0.5em;
+  border-radius: 3px;
+}
+.spectrum .bar .a { background: #f6e0db; }
+.spectrum .bar .b { background: #f8eecf; }
+.spectrum .bar .c { background: var(--accent-soft); }
+
+/* Closing slide */
+.closing { text-align: center; padding-top: 1em; }
+.closing .ranked {
+  display: inline-block;
+  text-align: left;
+  margin-top: 1em;
+  font-size: 0.95em;
+}
+.closing .ranked .item { padding: 0.4em 0; }
+.closing .ranked .num { color: var(--accent); font-weight: 700; margin-right: 0.5em; }
+.closing .punch { margin-top: 1.2em; font-weight: 600; color: var(--accent); }
+
+/* Misc */
+.small { font-size: 0.65em; color: var(--muted); }
+.tiny { font-size: 0.55em; color: var(--muted); }
+
+.reveal .controls { color: var(--accent); }
+.reveal .progress { color: var(--accent); }

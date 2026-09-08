@@ -1,0 +1,12 @@
+.obsidian/
+.claude/
+.DS_Store
+
+# Quarto render outputs (rendered HTML/JS/CSS go to _site, then pushed to gh-pages branch)
+.quarto/
+/presentation/_site/
+/presentation/slides.html
+/presentation/slides_files/
+
+# Note: /presentation/_freeze/ is intentionally NOT ignored — Quarto recommends
+# committing it so re-publishes don't re-execute unchanged code.

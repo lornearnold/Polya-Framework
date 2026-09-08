@@ -1,0 +1,3 @@
+[submodule "reference/polya_heuristic"]
+	path = reference/polya_heuristic
+	url = https://github.com/lornearnold/polya_heuristic.git

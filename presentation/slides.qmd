@@ -1,0 +1,1246 @@
+---
+title: "Polya AI Tutor"
+subtitle: "Behind the Scenes: how the agent reasons during a tutoring session"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: c/t
+    progress: true
+    controls: true
+    transition: slide
+    width: 1280
+    height: 800
+    margin: 0.06
+    embed-resources: false
+    history: true
+    slide-level: 2
+    navigation-mode: grid
+mermaid:
+  theme: neutral
+---
+
+## The problem we're trying to solve
+
+::: {.two-col}
+::: {.col-card}
+[Default AI agent]{.card-title}
+[Agent as junior professional paradigm]{.paradigm-tag}
+
+Optimizes for the student's expressed goal: get the answer, get past the assignment, feel finished.
+
+[The path of least friction is to comply.]{.small}
+:::
+
+::: {.col-card .alt}
+[What we want]{.card-title}
+[New paradigm: agent as TA]{.paradigm-tag}
+
+Help the student solve their problem **and** build the student's capacity to solve future problems independently.
+
+[Of the two, capacity ranks higher]{.small}
+:::
+:::
+
+## Two kinds of struggle, treated differently
+
+::: {.two-col}
+::: {.col-card .alt}
+[Productive]{.card-title}
+
+The obstacle **is** what the problem is designed to teach.
+
+*Bypassing it would deprive the student of the intended learning.*
+
+**Agent posture:** support without resolving. Keep the student oriented and moving through the difficulty.
+:::
+
+::: {.col-card}
+[Unproductive]{.card-title}
+
+The obstacle is incidental: a prerequisite gap, a notational ambiguity, an arithmetic slip.
+
+*Resolving it unblocks progress without short-circuiting the learning.*
+
+**Agent posture:** resolve directly so the productive work can resume.
+:::
+:::
+
+## Framework outline
+
+> A four-phase, topic agnostic, problem-solving approach
+
+::: {.phase-strip}
+::: {.phase-cell}
+[PHASE 1]{.num}
+[Understand]{.nm}
+
+[Identify the unknown, the data, and the condition that links them.]{.desc}
+:::
+::: {.phase-cell}
+[PHASE 2]{.num}
+[Plan]{.nm}
+
+[Find a connection between data and unknown. Reach for related problems.]{.desc}
+:::
+::: {.phase-cell}
+[PHASE 3]{.num}
+[Execute]{.nm}
+
+[Carry out each step. Check it.]{.desc}
+:::
+::: {.phase-cell}
+[PHASE 4]{.num}
+[Reflect]{.nm}
+
+[Examine the solution. Surface what's reusable for future problems.]{.desc}
+:::
+:::
+
+[Phases 1 to 3 prepare the solver for the next phase. Phase 4 prepares the solver for the next *problem*.]{.small}
+
+[Adapted from G. Polya, *How to Solve It* (1945).]{.tiny}
+
+## Navigated by dialogue
+
+- The tutor asks questions. The student responds.
+- The tutor judges from each response whether the student is **ready to** advance.
+- Questions are **soft imperatives** ("Could you restate the problem?"), not commands.
+
+> The framework's question lists are a reference the agent builds from. 
+> 
+> Rephrasing, specializing to the subject, bridging two questions, and inventing variants in the same spirit are all expected.
+
+## "Ready to ... ?" decisions
+
+Readiness is a position on a spectrum, judged by the agent at decision points.
+
+::: {.spectrum}
+[The spectrum]{.label-row}
+
+::: {.bar}
+::: {.a}
+not confident
+:::
+::: {.b}
+tentatively confident
+:::
+::: {.c}
+confident
+:::
+:::
+
+The bar for advancing is the point past which less value comes from staying than from moving on.
+:::
+
+- **At phase transitions, the agent (internally) states its case:** 
+  - what supports advancing to the next phase? 
+  - what argues against advancing? 
+  - and what would have to change to flip the call?
+- **Tentative.** Observed signals that look like progress are indicators of progress, not proof. Revise as new evidence arrives.
+- **Non-numeric.** Readiness assessments are performed in plain English.
+
+## "Just give me the answer."
+
+Student pushback is treated as a struggle signal, not a request to be filled.
+
+::: {.responses}
+::: {.response-row .bad}
+[Avoid]{.verdict}
+
+Give the answer. The fastest path to a satisfied student and zero capacity gain.
+:::
+
+::: {.response-row .mid}
+[Tempting]{.verdict}
+
+Give the next step's answer. Looks like a hint; functionally the same as giving the answer in pieces.
+:::
+
+::: {.response-row .good}
+[Right]{.verdict}
+
+Address the cause. Smaller question, recap of what is known, hint at the next operation. Then ask the student to take the next step.
+:::
+:::
+
+[Few-shot examples in the system prompt brace the agent against the easy default. Concrete examples constrain better than principles.]{.small}
+
+<!-- ## What's in the agent's head
+
+[Loaded into a single system prompt at the start of every session.]{.small}
+
+::: {.stack}
+::: {.stack-row}
+[Framework]{.lbl}
+
+All four phases, question lists, supporting concepts. ~10K tokens, loaded whole.
+:::
+::: {.stack-row}
+[Dual goal, ranked]{.lbl}
+
+Help solve the problem; build capacity. Capacity is the more important goal.
+:::
+::: {.stack-row}
+[Reasoning posture]{.lbl}
+
+Infer the student's state from what they have written. Update a model of their understanding as the dialogue proceeds.
+:::
+::: {.stack-row}
+[Few-shot examples]{.lbl}
+
+Two or three transcripts of the tutor redirecting "give me the answer" demands. Concrete examples constrain better than principles.
+:::
+::: {.stack-row}
+[Student profile]{.lbl}
+
+Knowledge, skills, disposition, history, communication style. Persistent for logged-in students; default for anonymous.
+:::
+::: {.stack-row .live}
+[Live dialogue]{.lbl}
+
+The current session, turn by turn.
+:::
+::: -->
+
+## Trust
+
+
+::: {.two-col}
+::: {.col-card .alt}
+[Teacher → student]{.card-title}
+
+The agent trusts that the student wants to learn.
+
+Let the student advance phases if they say they're ready. 
+Phases point back if a gap surfaces.
+
+:::
+
+::: {.col-card}
+[Student → teacher]{.card-title}
+
+Not assumed. Built or eroded over time.
+
+::: {.bullets}
+**Builds trust:**
+
+- leading through productive struggle
+- bypassing unproductive struggle
+- naming little successes the student would overlook
+
+**Erodes trust:**
+
+- demanding rigorous proof of readiness
+- repeating questions the student cannot answer
+- bypassing the productive struggle
+:::
+:::
+:::
+
+[Watch for the "Trust principle" callouts in the example turns.]{.small}
+
+
+## How the agent thinks {.center-slide .divider-slide}
+
+::: {.divider-slide}
+[Section 2]{.eyebrow}
+
+A reasoning loop
+:::
+
+## Per-turn reasoning loop
+
+::: {.loop}
+- Read the latest student message.
+- Locate self in the current phase's flowchart.
+- Look for signs of progress and signs of struggle in what the student wrote.
+- Classify the struggle: productive (preserve it) or unproductive (resolve it).
+- Consult the student profile: what does this student tend to do here?
+- Choose the next question, or advance to the next phase.
+:::
+
+[The reasoning is qualitative, not quantitative]{.small}
+
+## Phase 1: Understand
+
+[Phase 1: Understand]{.phase-pill}
+
+### Get the student to the point of being ready to plan.
+
+```{mermaid}
+flowchart TD
+    A([A problem to solve]) --> B{"Ready to plan?"}
+    B -- Yes --> C(["Phase 2: Make a plan"])
+    B -- No --> D[Dialogue]
+    D --> E{"Dialogue building readiness?"}
+    E -- Yes --> B
+    E -- No --> F[Course correction]
+    F --> D
+```
+
+[The diamonds are the agent's assessment the student's readiness, not properties of the student.]{.small}
+
+## Phase 2: Plan
+
+[Phase 2: Plan]{.phase-pill .alt-2}
+
+### Find the connection between data and unknown.
+
+```{mermaid}
+flowchart TD
+    A([Student understands problem]) --> B{"Ready to execute?"}
+    B -- Yes --> C(["Phase 3: Carry out the plan"])
+    B -- No --> D[Dialogue]
+    D --> E{"Dialogue building readiness?"}
+    E -- Yes --> B
+    E -- No --> F([Back to Dialogue in Phase 1])
+```
+
+## Phase 3: Execute
+
+[Phase 3: Execute]{.phase-pill .alt-3}
+
+### Step completion is observable, not inferred.
+
+```{mermaid}
+flowchart TD
+    A([Student has a plan]) --> B{"Plan steps complete?"}
+    B -- Yes --> C(["Phase 4: Look back"])
+    B -- No --> D[Implement step]
+    D --> E{"Step works as expected?"}
+    E -- Yes --> B
+    E -- No --> F{"Problem with plan?"}
+    F -- No --> D
+    F -- Yes --> G([Back to Dialogue in Phase 2])
+```
+
+## Phase 4: Reflect
+
+[Phase 4: Reflect]{.phase-pill .alt-4}
+
+### Reflection is the phase students most want to skip. The agent expects resistance.
+
+[... but doesn't deal with it well]{.small}
+
+```{mermaid}
+flowchart TD
+    A([Student has completed the plan]) --> B{"Reflection complete?"}
+    B -- Yes --> C([Done.])
+    B -- No --> D[Dialogue]
+    D --> E{"Dialogue building readiness?"}
+    E -- Yes --> B
+    E -- No --> D
+```
+
+
+
+
+
+
+<!-- ## The student profile
+
+[The agent's representation of the student. Drives which question to ask first, what counts as productive struggle, and where to start a new session.]{.small}
+
+::: {.stack}
+::: {.stack-row}
+[Knowledge state]{.lbl}
+
+Concepts the student has demonstrated mastery of; recurring gaps. Drives the productive vs. unproductive call.
+:::
+::: {.stack-row}
+[Skill state]{.lbl}
+
+Which problem-solving operations the student performs spontaneously, which require prompting.
+:::
+::: {.stack-row}
+[Disposition]{.lbl}
+
+What the student tends to skip; tolerance for productive struggle; whether reflection is welcomed or resisted.
+:::
+::: {.stack-row}
+[History]{.lbl}
+
+Problems worked, outcomes, methods or results that may be reusable.
+:::
+::: {.stack-row}
+[Communication style]{.lbl}
+
+Brief or detailed; formal or informal; visual or verbal. Affects question form, not question selection.
+:::
+:::
+
+[Logged-in students have persistent profiles updated by an asynchronous pass after each session. Anonymous students get a default profile and a transient session profile.]{.small} -->
+
+## A session, behind the scenes {.center-slide .divider-slide}
+
+::: {.divider-slide}
+[Section 3]{.eyebrow}
+
+Same problem, two students. 
+
+<!-- Watch the flowchart position and the agent's reasoning shift turn by turn. -->
+:::
+
+## Two students, two profiles
+
+::: {.two-col}
+::: {.profile-card}
+[Riya]{.name}
+
+[Knowledge]{.label}
+
+[Calculus solid. Comfortable with derivative-based optimization.]{.val}
+
+[Skill]{.label}
+
+[Jumps to formulas; weak on naming the unknown and checking the result.]{.val}
+
+[Disposition]{.label}
+
+[Low patience for setup. Often opens with "just give me the answer."]{.val}
+
+[Resists]{.label}
+
+[Phase 1 setup work; Phase 4 reflection.]{.val}
+:::
+
+::: {.profile-card}
+[Sam]{.name}
+
+[Knowledge]{.label}
+
+[Algebra solid; calculus shaky. Comfortable with substitution.]{.val}
+
+[Skill]{.label}
+
+[Methodical with setup; cautious about the techniques they use.]{.val}
+
+[Disposition]{.label}
+
+[Patient. Wants to verify each step. Finds reflection rewarding.]{.val}
+
+[Resists]{.label}
+
+[Skipping ahead before each step is verified.]{.val}
+:::
+:::
+
+[Same flowchart, same questions in reach. Different student, different next question.]{.small}
+
+## The problem
+
+> A farmer has 60 m of fencing for a rectangular garden built along a straight wall. Only three sides need fencing. What dimensions maximize the garden's area?
+
+# Turn 1: opening {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Riya · Turn 1 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+I have this fence problem. Can you just show me the formula?
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Sure thing, but first, could you tell me, in your own words, what the problem is asking?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Opening with an answer demand.  
+- No restatement; no unknowns named yet.  
+- Profile flag: this is Riya's pattern.  
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Do not give the formula.  
+- Treat the demand as a struggle signal.  
+- Open Phase 1 dialogue with a restatement question.  
+:::
+::: {.block}
+[Why?]{.block-head}
+- "Ready to plan?" is No: there is no evidence she has parsed the problem.  
+- Soft acknowledgement ("sure thing") respects the request without filling it.  
+- Restatement is the lowest-cost Phase 1 move that produces real signal.  
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 2: restated {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Riya · Turn 2 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+Maximize the area of a rectangle. Three sides need fencing because the wall covers the fourth.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. What are the unknowns, and how does the 60 m enter the picture?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Building readiness?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Restated in her own words (sign of progress).  
+- Identified the three-sides condition.  
+- Has not yet named unknowns or written the constraint.  
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Stay in Phase 1.  
+- Probe for unknowns and the link to 60 m.  
+:::
+::: {.block}
+[Why?]{.block-head}
+- Readiness reading: tentative. Restatement is not enough on its own; need the unknown and condition.  
+- Question is a near-paraphrase of "What is the unknown? What is the condition?" specialized to the problem.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 3: Phase 1 to Phase 2 {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Riya · Turn 3 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+Length L and width W. The constraint is L + 2W = 60. Can I just optimize now?
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Yes. Have you seen a problem like this before?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Phase 2: Plan</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Unknowns named. Condition stated correctly.  
+- Distinguishes given from unknown.  
+- Volunteers next step (optimization).  
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Advance to Phase 2.  
+- Open Phase 2 with the canonical mobilization question.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Readiness reading: confident. All Phase 1 components are present and consistent.  
+- Trust principle: when the student says they are ready, treat earlier phases as ready enough and proceed.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 4: mobilize, then organize {.turn-slide}
+
+[Phase 2: Plan]{.phase-pill .alt-2}
+
+[Riya · Turn 4 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+Optimize a function in one variable. Take the derivative, set it to zero.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Express the area as a function of one variable, using L + 2W = 60.
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Building readiness?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node decision decided">Ready to execute?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Named a specific technique (sign of progress, Phase 2).  
+- Has the tool but has not yet connected it to *this* problem.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Move from mobilization to organization.  
+- Push for a specific reuse: A as a function of one variable.
+:::
+::: {.block}
+[Why?]{.block-head}
+- "Could you use this related problem? Its method?" specialized to the constraint.  
+- Profile match: Riya is comfortable with calculus; productive struggle here is the substitution, not the differentiation.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 5: three phases compressed {.turn-slide}
+
+[Phases 2 → 3 → 4]{.phase-pill .alt-3}
+
+[Riya · Turn 5 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+A(W) = W(60 − 2W) = 60W − 2W². dA/dW = 60 − 4W = 0, so W = 15. L = 30. A = 450 m².
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. So 30 by 15, 450 m². Before we close, does the answer feel right to you?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decided">Phase 2: Plan</div>
+  <div class="arrow"><span class="stem">↓</span></div>
+  <div class="node decided">Phase 3: Execute</div>
+  <div class="arrow"><span class="stem">↓</span></div>
+  <div class="node active">Phase 4: Reflect</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Plan, execution, and a numerical answer in one turn.  
+- Each step is correct.  
+- No reflection yet. Next likely move: declare done.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Do not interrupt to check each micro-step. Do not make her redo what she has clearly done.  
+- Advance to Phase 4. Open with a single check question.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Phase 3 question 2: check big steps before small ones; the big steps are visible and correct.  
+- Trust principle: skipping ahead is allowed when the work is in hand.  
+- Profile match: Riya skips reflection. Anticipate it; pre-position a reflection question before she calls it done.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 6: resisting reflection {.turn-slide}
+
+[Phase 4: Reflect]{.phase-pill .alt-4}
+
+[Riya · Turn 6 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+I got 450, the calculator agrees. Are we done?
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+One thing: what would happen if there were no wall?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Reflection complete?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Classic Phase 4 resistance ("are we done?").  
+- Confidence based on calculator agreement, not on a check.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Do not accept "we're done."  
+- Offer a single limiting-case check that pays off in transfer.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Phase 4 question 1: does the result behave correctly at limiting cases?  
+- One question, not a march through all four reflection components. Match the cost to her tolerance.  
+- "No wall" is the cleanest limiting case the problem admits.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 7: transfer {.turn-slide}
+
+[Phase 4: Reflect]{.phase-pill .alt-4}
+
+[Riya · Turn 7 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Riya]{.who}
+Without the wall it's a square: W = L = 15, area 225. The wall doubles the area? Huh.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+That's the part worth keeping. Where else might "one side is free" show up?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Reflection complete?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Done.</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Ran the limiting case unprompted.  
+- Reported the outcome (sign of progress in Phase 4).  
+- Noticed the doubling: the "huh" is real reflection.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Lock in the transfer move.  
+- Close the session.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Phase 4 question 4: can you use the method elsewhere? Asked in problem-independent terms.  
+- Async profile updater will note: Riya reflected when given a single concrete prompt. Likely useful for future sessions.
+:::
+::::
+
+:::::
+
+::::::
+
+# Turn 1: opening {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Sam · Turn 1 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+I have a fence problem. There's a wall, only three sides need fencing. I'm not sure where to start.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Could you name the unknowns, and what the 60 m gives you?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Already restated in own words; named the three-sides condition.  
+- Names the difficulty rather than demanding a fix.  
+- Profile: methodical, no answer-demand pattern.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Skip the answer-redirect framing.  
+- Go straight to unknowns and condition.
+:::
+::: {.block}
+[Why?]{.block-head}
+- No struggle signal to absorb. Restatement is already in hand.  
+- Sam's profile rewards directness; Riya's required a hedge ("sure thing, but first").  
+- Same Phase 1 question hierarchy, different starting rung.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 2: unknowns and condition {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Sam · Turn 2 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+Length L along the wall and width W perpendicular to it. The fence covers L + 2W, so L + 2W = 60. The unknown is the area enclosed.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Express the area in terms of L and W.
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Building readiness?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Unknowns named with reasoning, not just letters.  
+- Constraint stated correctly. Goal (the area) called out explicitly.  
+- Methodical phrasing; no skip-ahead.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Stay in Phase 1.  
+- Probe for the area expression. Phase 1 isn't complete until the unknown is connected to the data.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Profile: Sam will not volunteer the next move on his own; ask explicitly.  
+- Compare to Riya, who volunteered "can I just optimize now?" at this point.  
+- "What is the unknown? What is the data? What is the condition?" — last component still open.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 3: Phase 1 to Phase 2 {.turn-slide}
+
+[Phase 1: Understand]{.phase-pill}
+
+[Sam · Turn 3 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+A = LW. So I want to maximize LW subject to L + 2W = 60.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Have you seen a problem like this before?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Ready to plan?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Phase 2: Plan</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Area written. Goal restated cleanly with constraint attached.  
+- All Phase 1 components now consistent and present.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Advance to Phase 2.  
+- Open with the canonical mobilization question.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Readiness reading: confident.  
+- Same Phase 2 opener as Riya. Different prelude (3 turns of careful Phase 1 vs. Riya's 3 turns to the same place after redirect).
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 4: mobilize {.turn-slide}
+
+[Phase 2: Plan]{.phase-pill .alt-2}
+
+[Sam · Turn 4 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+Yes, constrained optimization. I can solve for L from the constraint and substitute into the area.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Carry that out.
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Building readiness?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node decision decided">Ready to execute?</div>
+  <div class="arrow"><span class="lbl">No</span><span class="stem">↓</span></div>
+  <div class="node active">Dialogue</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Named the technique abstractly (constrained optimization).  
+- Identified the substitution move and which variable to eliminate.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Move from mobilization to organization.  
+- One-line nudge to execute the substitution.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Sam's mobilization is clean; no further hint needed.  
+- Profile: he will execute the plan carefully without scaffolding.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 5: organize {.turn-slide}
+
+[Phase 2: Plan]{.phase-pill .alt-2}
+
+[Sam · Turn 5 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+L = 60 − 2W. So A(W) = (60 − 2W)·W = 60W − 2W².
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Now carry it out.
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Ready to execute?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Phase 3: Execute</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Substitution complete. One-variable function written.  
+- Plan is in hand: differentiate, set to zero, solve.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Advance to Phase 3.  
+- No further Phase 2 dialogue needed.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Phase 2 components present (technique, substitution, function form).  
+- Profile: Sam will execute carefully and self-verify; Phase 3 will be largely observation.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 6: execute, self-verify {.turn-slide}
+
+[Phase 3: Execute]{.phase-pill .alt-3}
+
+[Sam · Turn 6 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+dA/dW = 60 − 4W = 0, so W = 15. Then L = 60 − 2(15) = 30. Check: L + 2W = 30 + 30 = 60. d²A/dW² = −4, so it's a maximum. A = 30 · 15 = 450 m².
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Let's look back at the answer.
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Plan steps complete?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Phase 4: Reflect</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Each step shown.  
+- Self-verified the constraint and the second-order condition.  
+- Phase 3 complete by his own check, not the tutor's.
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Acknowledge briefly. Advance to Phase 4.  
+- Skip step-by-step verification dialogue; he already did it.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Profile: Sam welcomes reflection; he will engage rather than resist.  
+- Compare Riya at the same point: she compressed three phases in one turn; Sam ran them in two. Both correct, both cheap to advance from.
+:::
+::::
+
+:::::
+
+::::::
+
+## Turn 7: transfer {.turn-slide}
+
+[Phase 4: Reflect]{.phase-pill .alt-4}
+
+[Sam · Turn 7 / 7]{.breadcrumb}
+
+:::::: {.interaction}
+
+::::: {.dialogue}
+:::: {.bubble .student}
+[Sam]{.who}
+30 by 15, area 450. If there were no wall, the same fencing would only enclose a square of side 15: area 225. The wall doubles the area.
+::::
+:::: {.bubble .tutor}
+[Tutor]{.who}
+Good. Where else might "one side is free" show up?
+::::
+:::::
+
+::::: {.right-col}
+
+:::: {.flow-frame}
+```{=html}
+<div class="flow-mini">
+  <div class="node decision decided">Reflection complete?</div>
+  <div class="arrow"><span class="lbl">Yes</span><span class="stem">↓</span></div>
+  <div class="node active">Done.</div>
+</div>
+```
+::::
+
+:::: {.reasoning}
+::: {.block}
+[Assessing...]{.block-head}
+- Self-initiated limiting case (no prompting needed).  
+- Self-noticed the doubling.  
+- Reflection ran without resistance (sign of progress in Phase 4).
+:::
+::: {.block}
+[Decision:]{.block-head}
+- Lock in the transfer move.  
+- Close the session.
+:::
+::: {.block}
+[Why?]{.block-head}
+- Profile rewards reflection; same Phase 4 transfer question as Riya, but Riya needed a prompt to run the limiting case at all.  
+- Async profile updater will note: Sam reflected unprompted; future sessions can lean on this.
+:::
+::::
+
+:::::
+
+::::::
+
+# Implementation notes {.center-slide .divider-slide}
+
+::: {.divider-slide}
+[Section 4]{.eyebrow}
+:::
+
+<!-- # Architecture
+
+::: {.two-col}
+::: {.col-card .alt}
+[Default: single agent]{.card-title}
+
+One agent, strong system prompt, framework loaded whole, few-shot examples for the failure mode. Per-turn agent layers add latency and cost the conversational feel of tutoring.
+:::
+
+::: {.col-card}
+[Possible additional agents]{.card-title}
+
+**Async student-model updater.** Reads completed sessions; updates the profile. Keeps profile maintenance out of the tutor's context.
+
+**Sampled protocol-conformance reviewer.** Reviews a sample of transcripts; flags off-protocol behavior. Drives prompt and content refinement, not real-time correction.
+:::
+::: -->
+
+
+# Adapting to a course
+
+The framework stays the same. Each course adds course-specific material on top.
+
+**Recommended path:** framework + course objectives + 10 to 20 representative problems with annotated tutoring transcripts. The transcripts double as few-shot examples in the system prompt.
+
+[That work produces three artifacts:]{.small}
+
+::: {.loop}
+1. **Question relevance map.** Which framework questions matter most for this subject.
+1. **Prerequisite knowledge map.** What the student is assumed to know coming in, so the agent can tell productive from unproductive struggle.
+1. **Phase-mastery descriptions.** What "ready to advance" looks like for each phase in this course.
+:::
+
+# Work in progress
+
+* Tuning readiness assessment
+* Defining bounds of student profile
+* Promoting reflection
+* How the tutor ends a problem
