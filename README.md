@@ -31,7 +31,7 @@ Readiness to advance between phases is a qualitative judgment, made in plain Eng
 
 ## Student profile
 
-The tutor maintains a representation of the student covering knowledge, skills, disposition, history, and communication style. Logged-in students get persistent profiles, updated after each session by an asynchronous background pass. Anonymous students get a default profile and a transient session profile that is not persisted. See `docs/student_profile.md`.
+The tutor maintains a representation of the student covering knowledge, skills, and history, recorded as dated observations rather than labels. Logged-in students get persistent profiles, updated after each session by an asynchronous background pass. Anonymous students get a default profile and a transient session profile that is not persisted. See `docs/student_profile.md`.
 
 ## Adapting the framework to a course
 
