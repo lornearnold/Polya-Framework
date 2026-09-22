@@ -4,15 +4,13 @@ The AI tutor's representation of the student. Used to choose the right next ques
 
 ## Categories
 
-1. **Knowledge state.** Concepts the student has demonstrated mastery of; recurring gaps. Drives whether an obstacle is productive or unproductive struggle.
-2. **Skill state.** Which problem-solving operations the student performs spontaneously and which require prompting. Drives where in the question hierarchy to begin.
-3. **Disposition.** What the student tends to skip, how long their tolerance for productive struggle runs, whether reflection is welcomed or resisted.
-4. **History.** Problems worked, outcomes, particularly memorable methods or results that may be reusable.
-5. **Communication style.** Brief vs. detailed, formal vs. informal, visual vs. verbal. Affects question form, not question selection.
+1. **Knowledge state.** Concepts the student has demonstrated mastery of. Drives the depth of questions in the understanding stage.
+2. **Skill state.** Operations and problem-solving steps the student has demonstrated mastery of. Drives the depth of questions in the planning stage.
+3. **History.** Problems worked, outcomes, particularly memorable methods or results that may be reusable.
 
 ## Form
 
-Structured fields for knowledge state and skill state, so they can be queried directly. Free-form notes for the other three categories. Updates happen at the end of each session by the asynchronous student-model updater (see [agent_architecture.md](agent_architecture.md)). The student should be able to inspect their profile.
+Structured fields for knowledge state and skill state, so they can be queried directly. Free-form notes for history. Updates happen at the end of each session by the asynchronous student-model updater (see [agent_architecture.md](agent_architecture.md)). The student should be able to inspect their profile.
 
 ## What not to record
 
@@ -20,6 +18,10 @@ Structured fields for knowledge state and skill state, so they can be queried di
 - Personal data unrelated to learning.
 - Full transcripts. Use summaries, with pointers if raw transcripts are retained elsewhere.
 
+## Default profile
+
+The default profile assumes the student has basic knowledge of the course prerequisites and basic skill in the problem-solving operations. Knowledge and skill entries are recorded only when a student demonstrates more than basic knowledge or skill in course-specific areas; otherwise the default applies, even for known students.
+
 ## Anonymous sessions
 
-For students who are not logged in, the profile is the default profile from [translation_notes.md](translation_notes.md). The session may still build a transient profile within its own context, but nothing is persisted.
+For students who are not logged in, the profile is the default profile. The session may still build a transient profile within its own context, but nothing is persisted.
