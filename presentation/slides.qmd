@@ -27,7 +27,7 @@ mermaid:
 [Default AI agent]{.card-title}
 [Agent as junior professional paradigm]{.paradigm-tag}
 
-Optimizes for the student's expressed goal: get the answer, get past the assignment, feel finished.
+Optimizes for the student's expressed request: get the answer. Complying is cheaper than tutoring.
 
 [The path of least friction is to comply.]{.small}
 :::
@@ -194,7 +194,7 @@ Two or three transcripts of the tutor redirecting "give me the answer" demands. 
 ::: {.stack-row}
 [Student profile]{.lbl}
 
-Knowledge, skills, disposition, history, communication style. Persistent for logged-in students; default for anonymous.
+Knowledge, skills, history. Dated observations, not labels. Persistent for logged-in students; default for anonymous.
 :::
 ::: {.stack-row .live}
 [Live dialogue]{.lbl}
@@ -256,7 +256,7 @@ A reasoning loop
 - Locate self in the current phase's flowchart.
 - Look for signs of progress and signs of struggle in what the student wrote.
 - Classify the struggle: productive (preserve it) or unproductive (resolve it).
-- Consult the student profile: what does this student tend to do here?
+- Consult the student profile: what has this student already demonstrated?
 - Choose the next question, or advance to the next phase.
 :::
 
@@ -346,27 +346,17 @@ flowchart TD
 ::: {.stack-row}
 [Knowledge state]{.lbl}
 
-Concepts the student has demonstrated mastery of; recurring gaps. Drives the productive vs. unproductive call.
+Concepts the student has demonstrated mastery of. Drives the depth of questions in the understanding stage.
 :::
 ::: {.stack-row}
 [Skill state]{.lbl}
 
-Which problem-solving operations the student performs spontaneously, which require prompting.
-:::
-::: {.stack-row}
-[Disposition]{.lbl}
-
-What the student tends to skip; tolerance for productive struggle; whether reflection is welcomed or resisted.
+Operations and problem-solving steps the student has demonstrated mastery of. Drives the depth of questions in the planning stage.
 :::
 ::: {.stack-row}
 [History]{.lbl}
 
 Problems worked, outcomes, methods or results that may be reusable.
-:::
-::: {.stack-row}
-[Communication style]{.lbl}
-
-Brief or detailed; formal or informal; visual or verbal. Affects question form, not question selection.
 :::
 :::
 
@@ -390,19 +380,15 @@ Same problem, two students.
 
 [Knowledge]{.label}
 
-[Calculus solid. Comfortable with derivative-based optimization.]{.val}
+[Calculus solid. Has used derivative-based optimization unprompted.]{.val}
 
 [Skill]{.label}
 
-[Jumps to formulas; weak on naming the unknown and checking the result.]{.val}
+[Sets up and differentiates a one-variable function without help.]{.val}
 
-[Disposition]{.label}
+[History]{.label}
 
-[Low patience for setup. Often opens with "just give me the answer."]{.val}
-
-[Resists]{.label}
-
-[Phase 1 setup work; Phase 4 reflection.]{.val}
+[As of 2026-04: opened the last two sessions with "just give me the answer." Restated the problem once asked. Reflected when given a single concrete prompt.]{.val}
 :::
 
 ::: {.profile-card}
@@ -410,19 +396,15 @@ Same problem, two students.
 
 [Knowledge]{.label}
 
-[Algebra solid; calculus shaky. Comfortable with substitution.]{.val}
+[Algebra solid. Has used substitution unprompted. Calculus not yet demonstrated beyond basic derivatives.]{.val}
 
 [Skill]{.label}
 
-[Methodical with setup; cautious about the techniques they use.]{.val}
+[Names the unknown, data, and condition without help. Checks each step before moving on.]{.val}
 
-[Disposition]{.label}
+[History]{.label}
 
-[Patient. Wants to verify each step. Finds reflection rewarding.]{.val}
-
-[Resists]{.label}
-
-[Skipping ahead before each step is verified.]{.val}
+[As of 2026-04: ran a limiting-case check unprompted last session and volunteered a transfer problem. Has not yet volunteered a next move mid-plan.]{.val}
 :::
 :::
 
@@ -468,7 +450,7 @@ Sure thing, but first, could you tell me, in your own words, what the problem is
 [Assessing...]{.block-head}
 - Opening with an answer demand.  
 - No restatement; no unknowns named yet.  
-- Profile flag: this is Riya's pattern.  
+- Profile: Riya opened the last two sessions the same way.  
 :::
 ::: {.block}
 [Decision:]{.block-head}
@@ -478,7 +460,7 @@ Sure thing, but first, could you tell me, in your own words, what the problem is
 :::
 ::: {.block}
 [Why?]{.block-head}
-- "Ready to plan?" is No: there is no evidence she has parsed the problem.  
+- "Ready to plan?" is No: there is no evidence they have parsed the problem.  
 - Soft acknowledgement ("sure thing") respects the request without filling it.  
 - Restatement is the lowest-cost Phase 1 move that produces real signal.  
 :::
@@ -524,7 +506,7 @@ Good. What are the unknowns, and how does the 60 m enter the picture?
 :::: {.reasoning}
 ::: {.block}
 [Assessing...]{.block-head}
-- Restated in her own words (sign of progress).  
+- Restated in their own words (sign of progress).  
 - Identified the three-sides condition.  
 - Has not yet named unknowns or written the constraint.  
 :::
@@ -645,7 +627,7 @@ Good. Express the area as a function of one variable, using L + 2W = 60.
 ::: {.block}
 [Why?]{.block-head}
 - "Could you use this related problem? Its method?" specialized to the constraint.  
-- Profile match: Riya is comfortable with calculus; productive struggle here is the substitution, not the differentiation.
+- Profile: Riya has used derivative-based optimization before; productive struggle here is the substitution, not the differentiation.
 :::
 ::::
 
@@ -695,14 +677,14 @@ Good. So 30 by 15, 450 m². Before we close, does the answer feel right to you?
 :::
 ::: {.block}
 [Decision:]{.block-head}
-- Do not interrupt to check each micro-step. Do not make her redo what she has clearly done.  
+- Do not interrupt to check each micro-step. Do not make them redo what they have clearly done.  
 - Advance to Phase 4. Open with a single check question.
 :::
 ::: {.block}
 [Why?]{.block-head}
 - Phase 3 question 2: check big steps before small ones; the big steps are visible and correct.  
 - Trust principle: skipping ahead is allowed when the work is in hand.  
-- Profile match: Riya skips reflection. Anticipate it; pre-position a reflection question before she calls it done.
+- Profile: in past sessions Riya reflected when given one concrete prompt. Have one ready before they call it done.
 :::
 ::::
 
@@ -755,7 +737,7 @@ One thing: what would happen if there were no wall?
 ::: {.block}
 [Why?]{.block-head}
 - Phase 4 question 1: does the result behave correctly at limiting cases?  
-- One question, not a march through all four reflection components. Match the cost to her tolerance.  
+- One question, not a march through all four reflection components. Keep the cost low; that is what worked last time.  
 - "No wall" is the cleanest limiting case the problem admits.
 :::
 ::::
@@ -864,7 +846,7 @@ Could you name the unknowns, and what the 60 m gives you?
 ::: {.block}
 [Why?]{.block-head}
 - No struggle signal to absorb. Restatement is already in hand.  
-- Sam's profile rewards directness; Riya's required a hedge ("sure thing, but first").  
+- No answer demand to absorb here; Riya's opening needed a hedge ("sure thing, but first").  
 - Same Phase 1 question hierarchy, different starting rung.
 :::
 ::::
@@ -920,7 +902,7 @@ Good. Express the area in terms of L and W.
 :::
 ::: {.block}
 [Why?]{.block-head}
-- Profile: Sam will not volunteer the next move on his own; ask explicitly.  
+- Profile: no record yet of Sam volunteering a next move mid-plan; ask explicitly.  
 - Compare to Riya, who volunteered "can I just optimize now?" at this point.  
 - "What is the unknown? What is the data? What is the condition?" — last component still open.
 :::
@@ -1030,7 +1012,7 @@ Good. Carry that out.
 ::: {.block}
 [Why?]{.block-head}
 - Sam's mobilization is clean; no further hint needed.  
-- Profile: he will execute the plan carefully without scaffolding.
+- Profile: Sam has executed plans without scaffolding before; start with a nudge, not a walkthrough.
 :::
 ::::
 
@@ -1083,7 +1065,7 @@ Good. Now carry it out.
 ::: {.block}
 [Why?]{.block-head}
 - Phase 2 components present (technique, substitution, function form).  
-- Profile: Sam will execute carefully and self-verify; Phase 3 will be largely observation.
+- Profile: Sam has self-verified steps in past sessions. Expect Phase 3 to be mostly observation; revise if the work says otherwise.
 :::
 ::::
 
@@ -1127,17 +1109,17 @@ Good. Let's look back at the answer.
 [Assessing...]{.block-head}
 - Each step shown.  
 - Self-verified the constraint and the second-order condition.  
-- Phase 3 complete by his own check, not the tutor's.
+- Phase 3 complete by their own check, not the tutor's.
 :::
 ::: {.block}
 [Decision:]{.block-head}
 - Acknowledge briefly. Advance to Phase 4.  
-- Skip step-by-step verification dialogue; he already did it.
+- Skip step-by-step verification dialogue; they already did it.
 :::
 ::: {.block}
 [Why?]{.block-head}
-- Profile: Sam welcomes reflection; he will engage rather than resist.  
-- Compare Riya at the same point: she compressed three phases in one turn; Sam ran them in two. Both correct, both cheap to advance from.
+- Profile: Sam ran a limiting-case check unprompted last session. Open Phase 4 with a check question, not a redirect.  
+- Compare Riya at the same point: Riya compressed three phases in one turn; Sam ran them in two. Both correct, both cheap to advance from.
 :::
 ::::
 
@@ -1181,7 +1163,7 @@ Good. Where else might "one side is free" show up?
 [Assessing...]{.block-head}
 - Self-initiated limiting case (no prompting needed).  
 - Self-noticed the doubling.  
-- Reflection ran without resistance (sign of progress in Phase 4).
+- Both are Phase 4 signs of progress.
 :::
 ::: {.block}
 [Decision:]{.block-head}
@@ -1190,7 +1172,7 @@ Good. Where else might "one side is free" show up?
 :::
 ::: {.block}
 [Why?]{.block-head}
-- Profile rewards reflection; same Phase 4 transfer question as Riya, but Riya needed a prompt to run the limiting case at all.  
+- Same Phase 4 transfer question as Riya. Riya ran the limiting case once prompted; Sam ran it unprompted. Same question, different lead-in.  
 - Async profile updater will note: Sam reflected unprompted; future sessions can lean on this.
 :::
 ::::
